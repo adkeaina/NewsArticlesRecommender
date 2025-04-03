@@ -44,13 +44,20 @@ const App = () => {
         const data = await response.text();
         const [header, ...plainRows] = data.trim().split("\n").map(line => line.split(","));
         const rows = plainRows.map(row => Object.fromEntries(header.map((key, i) => [key, row[i]])));
-        let row: any;
-        try{
-          row = rows.find(row => row.articleId === id);
-          setRecommendations(prev => ({ ...prev, [type]: { data: Object.values(row).slice(1), error: "" } }));
-        } catch (error) {
-          setRecommendations(prev => ({ ...prev, [type]: { data: [], error: "Invalid ID(s)" } }));
+        const row = rows.find(row => row.articleId === id);
+
+        if (row) {
+          setRecommendations(prev => ({
+            ...prev,
+            [type]: { data: Object.values(row).slice(1), error: "" },
+          }));
+        } else {
+          setRecommendations(prev => ({
+            ...prev,
+            [type]: { data: [], error: "Invalid ID(s)" },
+          }));
         }
+        
       } else {
         const data = await response.json();
         setRecommendations(prev => ({ ...prev, [type]: { data, error: "" } }));
