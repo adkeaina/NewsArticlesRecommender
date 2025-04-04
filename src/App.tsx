@@ -75,7 +75,7 @@ const App = () => {
       alert("Please enter both user ID and article ID");
       return;
     }
-    fetchRecommendations("collaborative", `../public/data/collaborative.csv ${articleId}`);
+    fetchRecommendations("collaborative", `/data/collaborative.csv ${articleId}`);
     // fetchRecommendations("content", `../public/data/content.csv ${articleId}`);
     // fetchRecommendations("azure", `https://fake-api.com/azure?userId=${userId}&articleId=${articleId}`);
   };
