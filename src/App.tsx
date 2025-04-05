@@ -28,6 +28,7 @@ const App = () => {
     content: { data: [], error: "" },
     azure: { data: [], error: "" },
   });
+  const [hasTried, setHasTried] = useState(false);
 
   const fetchRecommendations = async (type: "collaborative" | "content" | "azure", endpoint: string) => {
     setLoadings({...loadings, [type]: true });
@@ -75,8 +76,9 @@ const App = () => {
       alert("Please enter both user ID and article ID");
       return;
     }
+    setHasTried(true);
     fetchRecommendations("collaborative", `/data/collaborative.csv ${articleId}`);
-    // fetchRecommendations("content", `../public/data/content.csv ${articleId}`);
+    fetchRecommendations("content", `/data/content.csv ${articleId}`);
     // fetchRecommendations("azure", `https://fake-api.com/azure?userId=${userId}&articleId=${articleId}`);
   };
 
@@ -144,6 +146,10 @@ const App = () => {
                         data.map((item: any, index: number) => (
                           <li key={index} className="list-group-item">{item}</li>
                         ))
+                      ) : key != "collaborative" ? (
+                        <div>{key.charAt(0).toUpperCase() + key.slice(1)} Model Coming Soon!</div>
+                      ) : !hasTried ? (
+                        <div>Enter a User ID and Move ID!</div>
                       ) : (
                         <div>No recommendations found</div>
                       )}
