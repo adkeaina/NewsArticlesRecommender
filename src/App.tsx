@@ -55,7 +55,7 @@ const App = () => {
         } else {
           setRecommendations(prev => ({
             ...prev,
-            [type]: { data: [], error: "Invalid ID(s)" },
+            [type]: { data: [], error: "Invalid ID" },
           }));
         }
 
@@ -72,8 +72,8 @@ const App = () => {
 
 
   const handleFetch = () => {
-    if (!userId || !articleId) {
-      alert("Please enter both user ID and article ID");
+    if (!articleId) {
+      alert("Please enter article ID");
       return;
     }
     setHasTried(true);
@@ -93,9 +93,10 @@ const App = () => {
             <input
               type="text"
               className="form-control shadow-sm"
-              placeholder="Enter user ID"
+              placeholder="Enter user ID (Coming Soon)"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
+              disabled
             />
           </div>
           <div className="col-md-5 col-sm-6 mb-3">
@@ -119,7 +120,7 @@ const App = () => {
   
       <div className="row">
         {Object.entries(recommendations).map(([key, { data, error }]) => (
-          <div className="col-md-4 mb-4" key={key}>
+          <div className={`col-md-4 mb-4 ${key == 'azure' && 'opacity-50'}`} key={key}>
             <div className="card shadow-sm border-light">
               <div className="card-header d-flex justify-content-between align-items-center">
                 <button
@@ -146,10 +147,10 @@ const App = () => {
                         data.map((item: any, index: number) => (
                           <li key={index} className="list-group-item">{item}</li>
                         ))
-                      ) : key != "collaborative" ? (
+                      ) : key == "azure" ? (
                         <div>{key.charAt(0).toUpperCase() + key.slice(1)} Model Coming Soon!</div>
                       ) : !hasTried ? (
-                        <div>Enter a User ID and Move ID!</div>
+                        <div>Enter an article ID</div>
                       ) : (
                         <div>No recommendations found</div>
                       )}
